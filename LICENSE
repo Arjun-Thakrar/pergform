@@ -1,0 +1,8 @@
+Copyright (c) 2026 Arjun Thakrar. All rights reserved.
+
+This software and its source code are proprietary. No permission is granted
+to copy, modify, distribute, publish, sublicense or sell any part of it
+without the prior written permission of the copyright holder.
+
+Third-party components bundled with this app (TensorFlow.js, the MoveNet
+pose model and the bundled fonts) remain under their own licenses.

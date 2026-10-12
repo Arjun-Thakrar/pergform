@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pERGform · Arjun Thakrar</title>
+<meta name="description" content="pERGform analyzes rowing-machine technique from a phone video, entirely on device. Created by Arjun Thakrar.">
+<link rel="icon" href="img/icon.png">
+<style>
+@font-face{font-family:Barlow;font-weight:600;src:url(fonts/barlow-condensed-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Barlow;font-weight:700;src:url(fonts/barlow-condensed-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:Source;font-weight:400;src:url(fonts/source-sans-3-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Source;font-weight:600;src:url(fonts/source-sans-3-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Mono;font-weight:500;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2')}
+:root{--bg:#eef2f4;--surface:#fafcfd;--ink:#13232d;--muted:#566872;--line:#cdd8de;--navy:#0C2340;--green:#1A4329;--accent:#1A4329;--hero:#0C2340;--heroink:#eef3f7;--chip:#e2ebe5}
+@media (prefers-color-scheme:dark){:root{--bg:#0e161c;--surface:#152029;--ink:#e4ecf0;--muted:#97a8b2;--line:#2a3944;--accent:#8fcca3;--hero:#0a1a2e;--heroink:#e4ecf0;--chip:#1d2f26}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Source,-apple-system,system-ui,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{background:var(--hero);color:var(--heroink);padding:56px 0 64px;border-bottom:6px solid var(--green)}
+.brand{display:flex;align-items:center;gap:16px}
+.brand img{width:64px;height:64px;border-radius:15px;background:#fff}
+h1,h2,h3{font-family:Barlow,sans-serif;line-height:1.1;margin:0}
+h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:700;letter-spacing:.01em}
+h1 .p{color:#8fcca3}
+.tag{font-size:clamp(1.15rem,2.6vw,1.4rem);max-width:640px;margin:18px 0 0;opacity:.92}
+.by{margin-top:22px;font-family:Mono,monospace;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.by b{color:#8fcca3;font-weight:500}
+section{padding:56px 0 8px}
+h2{font-size:2rem;font-weight:700;margin-bottom:14px}
+h3{font-size:1.3rem;font-weight:600;margin-bottom:6px}
+.lead{max-width:720px;color:var(--ink)}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:26px}
+figure{margin:0}
+figure img,figure video{width:100%;height:auto;display:block;border-radius:22px;border:1px solid var(--line);box-shadow:0 10px 28px rgba(12,35,64,.14)}
+figcaption{font-size:.88rem;color:var(--muted);margin-top:10px;line-height:1.4}
+.realgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.realgrid img,.realgrid video{border-radius:14px;aspect-ratio:720/700;object-fit:cover;background:#000}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 22px 18px}
+.card p{margin:0;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:22px 0 0;max-width:760px}
+.steps li{counter-increment:s;position:relative;padding:0 0 18px 52px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font:600 1.1rem/34px Barlow,sans-serif;text-align:center}
+.steps b{display:block;font-family:Barlow,sans-serif;font-size:1.2rem;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 13px;font-family:Mono,monospace;font-size:.8rem}
+.next{border-left:4px solid var(--green)}
+footer{margin-top:64px;padding:28px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+@media (max-width:820px){.shots{grid-template-columns:repeat(2,1fr)}.realgrid{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media (max-width:420px){header{padding:40px 0 48px}.brand img{width:52px;height:52px}}
+</style></head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><img src="img/icon.png" alt="" width="64" height="64"><h1><span class="p">p</span>ERGform</h1></div>
+  <p class="tag">Film yourself on a rowing machine and see, stroke by stroke, where your technique breaks down as you get tired. Everything runs on your phone.</p>
+  <p class="by">Created by <b>Arjun Thakrar</b> · iPhone, iPad and web · 2026</p>
+</div></header>
+
+<main class="wrap">
+<section class="real">
+  <h2>Tracking a real stroke</h2>
+  <p class="lead">Arjun rowing at New Trier. The pose model finds each joint on every frame, and the body angle (green) is measured from hip to shoulder.</p>
+  <div class="realgrid">
+    <figure><video poster="img/real-poster.jpg" autoplay muted loop playsinline preload="metadata" width="720" height="700" aria-label="Video of Arjun rowing on an indoor rowing machine with the tracked skeleton drawn over him"><source src="img/real-loop.mp4" type="video/mp4"><source src="img/real-loop.webm" type="video/webm"></video><figcaption>Two strokes, tracked frame by frame.</figcaption></figure>
+    <figure><img src="img/real_catch.jpg" alt="The catch: body pivoted about 21 degrees forward, with the tracked joints drawn over the rower" loading="lazy" width="900" height="875"><figcaption><b>Catch.</b> Body pivoted 21° forward, within the 20–30° target.</figcaption></figure>
+    <figure><img src="img/real_finish.jpg" alt="The finish: body leaning about 30 degrees back, with the tracked joints drawn over the rower" loading="lazy" width="900" height="875"><figcaption><b>Finish.</b> Body 30° back, past the 10–20° target. The report flags this layback as the first thing to fix.</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>The problem</h2>
+  <p class="lead">Rowers train for hours on indoor rowing machines, often without a coach watching. Form tends to hold up while you're fresh and slip at the end of a hard piece: overreaching at the catch, pulling with the arms too early, rushing the slide. Those are the habits that load the lower back. pERGform gives a rower the feedback a coach would, from a short video anyone can take.</p>
+  <div class="shots">
+    <figure><img src="img/analyze.jpg" alt="Analyze screen: a rower's video beside an anatomical model rowing in sync, with automatically detected catches and finishes on a timeline" loading="lazy" width="780" height="1688"><figcaption>The video and an anatomical model row in sync. Every catch and finish is detected automatically.</figcaption></figure>
+    <figure><img src="img/report.jpg" alt="Form report with a plain-language verdict and checks marked Fades when tired or On target" loading="lazy" width="780" height="1688"><figcaption>The form report compares each stroke with an optimal stroke and flags what fades with fatigue.</figcaption></figure>
+    <figure><img src="img/chart.jpg" alt="Chart of back angle through the stroke against the optimal curve, and a stroke-by-stroke table" loading="lazy" width="780" height="1688"><figcaption>Back angle through the stroke against the optimal curve, plus a stroke-by-stroke table.</figcaption></figure>
+    <figure><img src="img/history.jpg" alt="History screen listing a saved session" loading="lazy" width="780" height="1688"><figcaption>Session history stays on the device, so progress can be tracked over time.</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><b>Body tracking on the device</b>A pose-estimation neural network (MoveNet, running in TensorFlow.js) finds the hips, shoulders, knees, ankles, elbows and wrists in each frame. Nothing is uploaded; the model ships inside the app and runs offline.</li>
+    <li><b>Cleaning noisy data</b>Joint positions from a single phone camera are noisy, so low-confidence points are dropped, outliers are removed with a rolling median filter, and gaps are interpolated and smoothed.</li>
+    <li><b>Finding every stroke</b>Autocorrelation of the seat's motion estimates the stroke rate. Each catch is placed where the seat is furthest forward and each finish where the handle is closest to the body. Any mark can be corrected frame by frame.</li>
+    <li><b>Grading against an optimal stroke</b>Seven measures, from body angle at the catch to the recovery-to-drive ratio, are graded against coaching standards. Comparing the first strokes with the last shows what breaks down with fatigue.</li>
+    <li><b>Showing it clearly</b>A kinematic model of a rower, drawn with the working muscle groups, rows in time with the video so the difference between good and tired form is visible, not just a number.</li>
+  </ol>
+  <div class="chips"><span class="chip">JavaScript</span><span class="chip">TensorFlow.js · MoveNet</span><span class="chip">Signal processing</span><span class="chip">Canvas animation</span><span class="chip">Capacitor · iOS</span><span class="chip">Privacy by design</span></div>
+</section>
+
+<section>
+  <h2>Design decisions</h2>
+  <div class="grid">
+    <div class="card"><h3>Private by design</h3><p>Videos never leave the phone. There are no accounts, analytics or ads, and the App Store privacy label is "Data Not Collected".</p></div>
+    <div class="card"><h3>Honest about accuracy</h3><p>An automatic lower-back rounding check was tested and removed because a side-on phone video couldn't measure it reliably. The app says so instead of guessing.</p></div>
+    <div class="card"><h3>Built to be corrected</h3><p>Automatic detection gets most strokes right; when it doesn't, the rower can move, nudge or delete any mark and re-run the report instantly.</p></div>
+    <div class="card"><h3>Accessible</h3><p>44-point touch targets, contrast-checked colors, a reduced-motion mode, and layouts tuned separately for iPhone and iPad.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What's next</h2>
+  <div class="card next"><h3>pERGform Crew</h3><p>A second tool, in development, that analyzes video of an eight-person boat on the water: whether the crew catches together, catch timing for each seat in milliseconds, sequencing out of bow, shooting the slide, and how evenly the boat runs between strokes. Tested on simulated footage with known faults, it measured a seat catching 70 ms late at about 78 ms.</p></div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 Arjun Thakrar. All rights reserved.</span>
+  <span><a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a></span>
+</div></footer>
+<script>
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){const v=document.querySelector('.real video');if(v){v.removeAttribute('autoplay');v.pause();v.controls=true}}
+</script>
+</body></html>
